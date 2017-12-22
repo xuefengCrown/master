@@ -29,6 +29,15 @@ def timecall(fn, *args): # 跟 Peter Norvig 学的
 
 5. Lisp中使用宏实现词法抽象。
 
+5+. Lisp 在代码中写代码
+！！！！！！在代码中写代码：
+(list 'define 'list)
+(define list)
+约翰麦卡锡问，python能像lisp那样自如的将代码当作数据一样处理吗？
+Python是否能如Lisp那样优雅地像处理数据一样处理代码。
+Ruby能像数据那样使用列表结构吗？那每次算加和减的时候，都得进行解析啰？
+这方面Ruby还不如1960年的Lisp。
+
 6. 数据生成，过滤，map，累积（《SICP》）
 data enumerate
 data filter
@@ -49,6 +58,66 @@ constructor and selector
 hashing（python的set即使用此技术）
 
 10. recursive objects（《composing programs chapter2》）
+
+11.
+def improve(update, done, guess=1, max_updates=1000):
+        k = 0
+        try:
+            while not done(guess) and k < max_updates:
+                guess = update(guess)
+                k = k + 1
+            return guess
+        except ValueError:
+            raise IterImproveError(guess)
+
+12. 控制大系统的复杂度（《SICP 课程》）
+**黑盒抽象
+**按约定实现相应接口
+(* x (+ a1 a2))
+a1, a2 可以是数值，多项式，向量，甚至是电信号。如何用一个通用符号来表示它们?
+conventional interfaces
+**generic operations
+**large-scale structure and modularity
+**object-oriented programming
+各部分间相互传递信息，联系起来
+**operations on aggregates
+关于聚集的操作，称作“流”
+
+**定义新语言
+Metalinguistic abstraction
+元语言抽象，主要讨论如何建立一门新语言。
+
+13. 映射（数学，线性代数。思想之重要）
+值——值（数值）的映射
+空间——空间 的映射
+过程——过程 的映射
+
+14. 关注语言最本质的部分
+primitive objects
+ primitive procedures
+ primitive data
+ 
+means of combination
+ procedure composition
+ constructure of compound data
+
+means of abstraction
+ procedure definition
+ simple data abstraction
+
+capturing common patterns
+ higher-order procedures
+ data as procedures ???
+ 
+
+
+
+
+
+
+
+
+
 
 
 
