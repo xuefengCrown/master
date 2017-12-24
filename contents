@@ -1,3 +1,4 @@
+编程中学到的模式，手段
 1. 自顶向下设计方法
 poker-hand
 
@@ -109,7 +110,11 @@ capturing common patterns
  higher-order procedures
  data as procedures ???
  
-
+15. 创建局部表格《SICP》page204
+处理多个表格的方法：除了以表格作为参数外，还可以创建局部表格。
+Another way to deal with multiple tables is to have separate lookup and insert! procedures 
+for each table. We can do this by representing a table procedurally,（过程地） as an object that maintains 
+an internal table as part of its local state.
 
 
 
