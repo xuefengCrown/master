@@ -124,6 +124,9 @@ Another way to deal with multiple tables is to have separate lookup and insert! 
 for each table. We can do this by representing a table procedurally,（过程地） as an object that maintains 
 an internal table as part of its local state.
 
+16. 上下文管理器
+上下文管理器是一个Python对象，为操作提供了额外的上下文信息。 这种额外的信息， 在使用 with 语句初始化上下文，
+以及完成 with 块中的所有代码时，采用可调用的形式。
 
 
 
