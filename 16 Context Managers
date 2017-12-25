@@ -1,0 +1,46 @@
+上下文管理器
+上下文管理器是一个Python对象，为操作提供了额外的上下文信息。 这种额外的信息， 在使用 with 语句初始化上下文，
+以及完成 with 块中的所有代码时，采用可调用的形式。 这里展示了使用上下文管理器的为人熟知的示例，打开文件：
+with open('file.txt') as f:
+    contents = f.read()
+任何熟悉这种模式的人都知道以这种形式调用 open 能确保 f` 的 ``close 方法会在某个时候被调用。 
+这样可以减少开发人员的认知负担，并使代码更容易阅读。
+
+实现这个功能有两种简单的方法：使用类或使用生成器。 让我们自己实现上面的功能，以使用类方式开始：
+class CustomOpen(object):
+    def __init__(self, filename):
+        self.file = open(filename)
+
+    def __enter__(self):
+        return self.file
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        self.file.close()
+
+with CustomOpen('file') as f:
+    contents = f.read()
+这只是一个常规的Python对象，它有两个由 with 语句使用的额外方法。 CustomOpen 首先被实例化，
+然后调用它的`__enter__``方法，而且 __enter__ 的返回值在 as f 语句中被赋给 f 。 
+当 with 块中的内容执行完后，会调用 __exit__` 方法。
+
+而生成器方式使用了Python自带的 contextlib:
+
+from contextlib import contextmanager
+
+@contextmanager
+def custom_open(filename):
+    f = open(filename)
+    try:
+        yield f
+    finally:
+        f.close()
+
+with custom_open('file') as f:
+    contents = f.read()
+这与上面的类示例道理相通，尽管它更简洁。custom_open 函数一直运行到 yield 语句。 
+然后它将控制权返回给 with 语句，然后在 as f 部分将yield的 f 赋值给f。 
+finally 确保不论 with 中是否发生异常， close() 都会被调用。
+
+由于这两种方法都是一样的，所以我们应该遵循Python之禅来决定何时使用哪种。 
+如果封装的逻辑量很大，则类的方法可能会更好。 而对于处理简单操作的情况，函数方法可能会更好。
+
