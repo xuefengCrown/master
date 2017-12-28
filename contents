@@ -135,7 +135,8 @@ soterd(list_name, reverse=True)
 soterd(list_name, key=len) ;;根据长度排序
 max(list, key=f)
 
-
+18.
+在python中没有变量类型说明，所以良好的命名尤其关键，另外加上变量名意义说明的注释！
 
 
 
