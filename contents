@@ -132,6 +132,7 @@ an internal table as part of its local state.
 python中也广泛存在
 如：
 soterd(list_name, reverse=True)
+soterd(list_name, key=len) ;;根据长度排序
 max(list, key=f)
 
 
