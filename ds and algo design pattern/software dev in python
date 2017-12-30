@@ -1,0 +1,302 @@
+
+Traditional software development involves several phases. Three major steps are:
+1. Design
+2. Implementation
+3. Testing and Debugging
+In this section, we briefly discuss the role of these phases, and we introduce 
+several good practices for programming in Python, including coding style, naming
+conventions, formal documentation, and unit testing.
+python最佳实践——代码风格，命名习惯，正式文档，单元测试。
+
+2.2.1 Design
+For object-oriented programming, the design step is perhaps the most important
+phase in the process of developing software. For it is in the design step that we
+decide how to divide the workings of our program into classes, we decide how
+these classes will interact, what data each will store, and what actions each will
+perform. Indeed, one of the main challenges that beginning programmers face is
+deciding what classes to define to do the work of their program. While general
+prescriptions are hard to come by, there are some rules of thumb that we can apply
+when determining how to design our classes:
+• Responsibilities: Divide the work into different actors, each with a different
+responsibility. Try to describe responsibilities using action verbs. These
+actors will form the classes for the program.
+• Independence: Define the work for each class to be as independent from
+other classes as possible. Subdivide responsibilities between classes so that
+each class has autonomy over some aspect of the program. Give data (as in-
+stance variables) to the class that has jurisdiction over the actions that require
+access to this data.
+• Behaviors: Define the behaviors for each class carefully and precisely, so
+that the consequences of each action performed by a class will be well un-
+derstood by other classes that interact with it. These behaviors will define
+the methods that this class performs, and the set of behaviors for a class are
+the interface to the class, as these form the means for other pieces of code to
+interact with objects from the class.
+
+
+Defining the classes, together with their instance variables and methods, are key
+to the design of an object-oriented program. A good programmer will naturally
+develop greater skill in performing these tasks over time, as experience teaches
+him or her to notice patterns in the requirements of a program that match patterns
+that he or she has seen before.
+
+
+UML
+伪代码 描述算法流程
+
+
+2.2.3 Coding Style and Documentation
+Programs should be made easy to read and understand. Good programmers should
+therefore be mindful of their coding style, and develop a style that communicates
+the important aspects of a program’s design for both humans and computers. Con-
+ventions for coding style tend to vary between different programming communities.
+The official Style Guide for Python Code is available online at
+http://www.python.org/dev/peps/pep-0008/
+
+The main principles that we adopt are as follows:
+• Python code blocks are typically indented by 4 spaces. However, to avoid
+having our code fragments overrun the book’s margins, we use 2 spaces for
+each level of indentation. It is strongly recommended that tabs be avoided, as
+tabs are displayed with differing widths across systems, and tabs and spaces
+are not viewed as identical by the Python interpreter.
+• Use meaningful names for identifiers.
+Try to choose names that can be read aloud, and choose names that reflect the action, 
+responsibility, or data each identifier is naming.
+◦ Classes （CreditCard）
+◦ Functions（make payment）
+◦ Identifiers that represent a value considered to be a constant are tradi-
+tionally identified using all capital letters and with underscores to sep-
+arate words (e.g., MAX SIZE).
+
+• Use comments that add meaning to a program and explain ambiguous or
+confusing constructs. In-line comments are good for quick explanations;
+they are indicated in Python following the # character, as in
+if n % 2 == 1: # n is odd
+
+
+# Documentation
+def scale(data, factor):
+  ”””Multiply all entries of numeric data list by the given factor.”””
+  for j in range(len(data)):
+    data[j] = factor
+
+It is common to use the triple-quoted string delimiter for a docstring, even when
+the string fits on a single line, as in the above example. More detailed docstrings
+should begin with a single line that summarizes the purpose, followed by a blank
+line, and then further details. For example, we might more clearly document the
+scale function as follows:
+def scale(data, factor):
+  ”””Multiply all entries of numeric data list by the given factor.
+  
+  data an instance of any mutable sequence type (such as a list)
+  containing numeric elements
+ 
+  factor a number that serves as the multiplicative factor for scaling
+  ”””
+  for j in range(len(data)):
+    data[j] = factor
+
+
+# 2.2.4 Testing and Debugging
+Testing is the process of experimentally checking the correctness of a program,
+while debugging is the process of tracking the execution of a program and discov-
+ering the errors in it. Testing and debugging are often the most time-consuming
+activity in the development of a program.
+
+## Testing
+A careful testing plan is an essential part of writing a program. While verifying the
+correctness of a program over all possible inputs is usually infeasible, we should
+aim at executing the program on a representative subset of inputs. At the very
+minimum, we should make sure that every method of a class is tested at least once
+(method coverage). Even better, each code statement in the program should be
+executed at least once (statement coverage).
+
+Programs often tend to fail on special cases of the input. Such cases need to be
+carefully identified and tested. For example, when testing a method that sorts (that
+is, puts in order) a sequence of integers, we should consider the following inputs:
+• The sequence has zero length (no elements).
+• The sequence has one element.
+• All the elements of the sequence are the same.
+• The sequence is already sorted.
+• The sequence is reverse sorted.
+
+In addition to special inputs to the program, we should also consider special
+conditions for the structures used by the program. For example, if we use a Python
+list to store data, we should make sure that boundary cases, such as inserting or
+removing at the beginning or end of the list, are properly handled.
+
+Bottom-up testing proceeds from lower-level components to higher-level com-
+ponents. For example, bottom-level functions, which do notinvoke other functions,
+are tested first, followed by functions that call only bottom-level functions, and so
+on. Similarly a class that does not depend upon any other classes can be tested
+before another class that depends on the former. This form of testing is usually
+described as unit testing, as the functionality of a specific component is tested in
+isolation of the larger software project. If used properly, this strategy better isolates
+the cause of errors to the component being tested, as lower-level components upon
+which it relies should have already been thoroughly tested.
+
+
+## Error Checking
+Our implementation of the CreditCard class is not particularly robust. First, we
+note that we did not explicitly check the types of the parameters to charge and
+make payment, nor any of the parameters to the constructor. If a user were to make
+a call such as visa.charge( candy ), our code would presumably crash when at-
+tempting to add that parameter to the current balance. If this class were to be widely
+used in a library, we might use more rigorous techniques to raise a TypeError when
+facing such misuse (see Section 1.7).
+Beyond the obvious type errors, our implementation may be susceptible to log-
+ical errors. For example, if a user were allowed to charge a negative price, such
+as visa.charge(−300), that would serve to lower the customer’s balance. This pro-
+vides a loophole for lowering a balance without making a payment. Of course,
+this might be considered valid usage if modeling the credit received when a cus-
+tomer returns merchandise to a store. We will explore some such issues with the
+CreditCard class in the end-of-chapter exercises.
+
+## Testing class
+测试要覆盖所有方法；也要覆盖所有语句。
+these tests provide method coverage, as each of the methods is called at least once, 
+but it does not provide statement coverage, as there is never a case in which a charge 
+is rejected due to the credit limit.
+
+## 2.3.2 Operator Overloading and Python’s Special Methods
+By default, the + operator is undefined for a new class. However, the author
+of a class may provide a definition using a technique known as operator overload-
+ing. This is done by implementing a specially named method. In particular, the
++ operator is overloaded by implementing a method named add , which takes
+the right-hand operand as a parameter and which returns the result of the expres-
+sion. That is, the syntax, a + b, is converted to a method call on object a of the
+form, a. add (b). Similar specially named methods exist for other operators.
+Table 2.1 provides a comprehensive list of such methods.
+When a binary operator is applied to two instances of different types, as in
+3 love me , Python gives deference to the class of the left operand. In this
+example, it would effectively check if the int class provides a sufficient definition
+for how to multiply an instance by a string, via the mul method. However,
+if that class does not implement such a behavior, Python checks the class defini-
+tion for the right-hand operand, in the form of a special method named rmul
+(i.e., “right multiply”). This provides a way for a new user-defined class to support
+mixed operations that involve an instance of an existing class (given that the exist-
+ing class would presumably not have defined a behavior involving this new class).
+The distinction between mul and rmul also allows a class to define dif-
+ferent semantics in cases, such as matrix multiplication, in which an operation is
+noncommutative (that is, A x may differ from x A).
+
+## Non-Operator Overloads
+In addition to traditional operator overloading, Python relies on specially named
+methods to control the behavior of various other functionality, when applied to
+user-defined classes. For example, the syntax, str(foo), is formally a call to the
+constructor for the string class. Of course, if the parameter is an instance of a user-
+defined class, the original authors of the string class could not have known how
+that instance should be portrayed. So the string constructor calls a specially named
+method, foo. str (), that must return an appropriate string representation.
+Similar special methods are used to determine how to construct an int, float, or
+bool based on a parameter from a user-defined class. The conversion to a Boolean
+value is particularly important, because the syntax, if foo:, can be used even when
+foo is not formally a Boolean value (see Section 1.4.1). For a user-defined class,
+that condition is evaluated by the special method foo. bool ().
+
+## Implied Methods
+Asageneral rule, if aparticular special method isnot implemented inauser-defined
+class, the standard syntax that relies upon that method will raise an exception. For
+example, evaluating the expression, a + b, for instances of a user-defined class
+without add or radd will raise an error.
+However, there are some operators that have default definitions provided by
+Python, in the absence of special methods, and there are some operators whose
+definitions are derived from others. For example, the bool method, which
+supports the syntax if foo:, has default semantics so that every object other than
+None is evaluated as True. However, for container types, the len method is
+typically defined to return the size of the container. If such a method exists, then
+the evaluation of bool(foo) is interpreted by default to be True for instances with
+nonzero length, and False for instances with zero length, allowing a syntax such as
+if waitlist: to be used to test whether there are one or more entries in the waitlist.
+In Section 2.3.4, we will discuss Python’s mechanism for providing iterators
+for collections via the special method, iter . With that said, if a container class
+provides implementations for both len and getitem , a default iteration is
+provided automatically (using means we describe in Section 2.3.4). Furthermore,
+once an iterator is defined, default functionality of contains is provided.
+In Section 1.3 we drew attention to the distinction between expression a is b
+and expression a == b, with the former evaluating whether identifiers a and b are
+aliases for the same object, and the latter testing a notion of whether the two iden-
+tifiers reference equivalent values. The notion of “equivalence” depends upon the
+context of the class, and semantics is defined with the eq method. However, if
+no implementation is given for eq , the syntax a == b is legal with semantics
+of a is b, that is, an instance is equivalent to itself and no others.
+We should caution that some natural implications are not automatically pro-
+vided by Python. For example, the eq method supports syntax a == b, but
+providing that method does not affect the evaluation of syntax a != b. (The ne
+method should be provided, typically returning not (a == b) as a result.) Simi-
+larly, providing a lt method supports syntax a < b, and indirectly b > a, but
+providing both lt and eq does not imply semantics for a <= b.
+
+
+搞清楚命名空间相当重要！！！
+python中，函数也可以有属性（attr）
+
+## Nested Classes
+It is also possible to nest one class definition within the scope of another class.
+This is a useful construct, which we will exploit several times in this book in the
+implementation of data structures. This can be done by using a syntax such as
+
+class A: # the outer class
+  class B: # the nested class
+...
+
+In this case, class B is the nested class. The identifier B is entered into the name-
+space of classAassociated withthenewly defined class. Wenote that this technique
+is unrelated to the concept of inheritance, as class B does not inherit from class A.
+Nesting one class in the scope of another makes clear that the nested class
+exists for support of the outer class. Furthermore, it can help reduce potential name
+conflicts, because it allows for a similarly named class to exist in another context.
+For example, we will later introduce a data structure known as a linked list and will
+define a nested node class to store the individual components of the list. We will
+also introduce a data structure known as a tree that depends upon its own nested
+node class. These two structures rely on different node definitions, and by nesting
+those within the respective container classes, we avoid ambiguity.
+Another advantage of one class being nested as a member of another is that it
+allows for a more advanced form of inheritance in which a subclass of the outer
+class overrides the definition of its nested class. We will make use of that technique
+in Section 11.2.1 when specializing the nodes of a tree structure.
+
+
+## 2.5.2 Name Resolution and Dynamic Dispatch
+In the previous section, we discussed various namespaces, and the mechanism for
+establishing entries in those namespaces. In this section, we examine the process
+that is used when retrieving a name in Python’s object-oriented framework. When
+the dot operator syntax is used to access an existing member, such as obj.foo, the
+Python interpreter begins a name resolution process, described as follows:
+1. The instance namespace is searched; if the desired name is found, its associ-
+ated value is used.
+2. Otherwise the class namespace, for the class to which the instance belongs,
+is searched; if the name is found, its associated value is used.
+3. If the name was not found in the immediate class namespace, the search con-
+tinues upward through the inheritance hierarchy, checking the class name-
+space for each ancestor (commonly by checking the superclass class, then its
+superclass class, and so on). The first time the name is found, its associate
+value is used.
+4. If the name has still not been found, an AttributeError is raised.
+
+
+## 2.6 Shallow and Deep Copying
+In Chapter 1, we emphasized that an assignment statement foo = bar makes the
+name foo an alias for the object identified as bar. In this section, we consider
+the task of making a copy of an object, rather than an alias. This is necessary in
+applications when we want to subsequently modify either the original or the copy
+in an independent manner.
+
+## Python’s copy Module
+To create a deep copy, we could populate our list by explicitly making copies of
+the original color instances, but this requires that we know how to make copies of
+colors (rather than aliasing). Python provides a very convenient module, named
+copy, that can produce both shallow copies and deep copies of arbitrary objects.
+This module supports two functions: the copy function creates a shallow copy
+of its argument, and the deepcopy function creates a deep copy of its argument.
+After importing the module, we may create a deep copy for our example, as shown
+in Figure 2.11, using the command:
+palette = copy.deepcopy(warmtones)
+
+
+
+
+
+
+
+
+
